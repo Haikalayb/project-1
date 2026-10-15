@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senja Artisan Bakery POS - Sistem Kasir, Stok & Keuangan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: {
+                            50: '#FDFBF7',
+                            100: '#FAF6F0',
+                            200: '#F2E9DC',
+                            300: '#E5D5C0',
+                        },
+                        espresso: {
+                            700: '#4A3525',
+                            800: '#362417',
+                            900: '#24170E',
+                        },
+                        bakery: {
+                            500: '#D97706',
+                            600: '#B45309',
+                            700: '#92400E',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cream-100 text-espresso-900 font-sans h-screen w-screen overflow-hidden select-none">
+
+<!-- APP SHELL -->
+<div class="flex h-full w-full overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside id="appSidebar" class="w-64 min-w-[16rem] shrink-0 bg-espresso-900 text-cream-100 flex flex-col justify-between transition-all duration-300 z-30 h-full">
+        <!-- Brand Header -->
+        <div>
+            <div class="h-16 px-5 flex items-center gap-3 border-b border-espresso-700/60">
+                <div class="w-10 h-10 rounded-xl bg-bakery-500 flex items-center justify-center text-white shadow-md shrink-0">
+                    <i class="fa-solid fa-bread-slice text-lg"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <h1 class="font-bold text-base leading-tight tracking-wide text-white truncate">Senja Bakery</h1>
+                    <p class="text-[11px] text-amber-300/80 font-medium truncate">POS & Inventory System</p>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="p-3 space-y-1.5">
+                <button onclick="switchTab('pos')" id="nav-pos" class="nav-btn active-nav w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all">
+                    <i class="fa-solid fa-cash-register w-5 text-center"></i>
+                    <span>Kasir (POS Terminal)</span>
+                </button>
+                <button onclick="switchTab('inventory')" id="nav-inventory" class="nav-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-cream-200/80 hover:bg-espresso-800 hover:text-white transition-all">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-boxes-stacked w-5 text-center"></i>
+                        <span>Stok & Resep (BOM)</span>
+                    </div>
+                    <span id="lowStockBadge" class="hidden px-2 py-0.5 text-[10px] font-bold bg-red-500 text-white rounded-full">0</span>
+                </button>
+                <button onclick="switchTab('finance')" id="nav-finance" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-cream-200/80 hover:bg-espresso-800 hover:text-white transition-all">
+                    <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                    <span>Laporan Keuangan</span>
+                </button>
+                <button onclick="switchTab('logs')" id="nav-logs" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-cream-200/80 hover:bg-espresso-800 hover:text-white transition-all">
+                    <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i>
+                    <span>Kartu Stok & Riwayat</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Accuracy Indicator Footer -->
+        <div class="p-4 m-3 rounded-xl bg-espresso-800 border border-espresso-700">
+            <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs text-cream-200/80 font-medium">Akurasi Stok Fisik</span>
+                <span id="accuracyScoreText" class="text-xs font-bold text-emerald-400">100%</span>
+            </div>
+            <div class="w-full h-2 bg-espresso-900 rounded-full overflow-hidden">
+                <div id="accuracyBar" class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 100%"></div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-espresso-700/70 flex items-center justify-between text-[11px] text-cream-300/70">
+                <span>Shift: Pagi (Alya)</span>
+                <button onclick="resetDemoData()" class="text-amber-400 hover:underline font-semibold" title="Reset Data Awal">
+                    <i class="fa-solid fa-rotate-right mr-1"></i>Reset
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN WORKSPACE -->
+    <div class="flex-1 flex flex-col h-full min-w-0 overflow-hidden">
+
+        <!-- TOP HEADER -->
+        <header class="h-16 bg-white border-b border-cream-300 px-5 flex items-center justify-between shrink-0 z-20">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="w-9 h-9 rounded-lg bg-cream-100 hover:bg-cream-200 text-espresso-800 flex items-center justify-center transition">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h2 id="pageTitle" class="text-base font-bold text-espresso-900">Kasir & Terminal Penjualan</h2>
+                    <p id="currentDateDisplay" class="text-xs text-espresso-700/70">Memuat tanggal...</p>
+                </div>
+            </div>
+
+            <!-- Quick Summary Pills -->
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-2 bg-cream-100 border border-cream-300 px-3 py-1.5 rounded-xl">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-medium text-espresso-700">Omzet Hari Ini:</span>
+                    <span id="headerOmzet" class="text-xs font-extrabold text-espresso-900">Rp 0</span>
+                </div>
+                <button onclick="openProductionModal()" class="px-3.5 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-bakery-700 font-bold text-xs flex items-center gap-2 transition">
+                    <i class="fa-solid fa-fire-burner"></i>
+                    <span class="hidden md:inline">+ Produksi Roti (BOM)</span>
+                </button>
+                <button onclick="openZReportModal()" class="px-3.5 py-2 rounded-xl bg-espresso-900 hover:bg-espresso-800 text-white font-bold text-xs flex items-center gap-2 transition">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <span class="hidden md:inline">Tutup Kasir (Z-Report)</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- TAB 1: POS TERMINAL -->
+        <main id="tab-pos" class="flex-1 flex flex-col lg:flex-row h-full overflow-hidden">
+            <!-- Left/Center: Product Catalog -->
+            <div class="flex-1 flex flex-col h-full min-w-0 overflow-hidden p-4 lg:p-5">
+                <!-- Search & Category Filter -->
+                <div class="flex flex-col sm:flex-row gap-3 mb-4 shrink-0">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-espresso-700/50 text-sm"></i>
+                        <input type="text" id="searchInput" oninput="renderPOSProducts()" placeholder="Cari nama roti, pastry, kopi atau kode SKU..." class="w-full pl-10 pr-4 py-2.5 bg-white border border-cream-300 rounded-xl text-sm focus:outline-none focus:border-bakery-500">
+                    </div>
+                    <div class="flex gap-1.5 overflow-x-auto pb-1 sm:pb-0 shrink-0" id="categoryFilterContainer">
+                        <button onclick="setCategory('ALL')" data-cat="ALL" class="cat-pill active-cat px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition">Semua</button>
+                        <button onclick="setCategory('Roti Manis')" data-cat="Roti Manis" class="cat-pill px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-cream-300 text-espresso-700 whitespace-nowrap transition">Roti Manis</button>
+                        <button onclick="setCategory('Pastry')" data-cat="Pastry" class="cat-pill px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-cream-300 text-espresso-700 whitespace-nowrap transition">Pastry & Croissant</button>
+                        <button onclick="setCategory('Kue & Tart')" data-cat="Kue & Tart" class="cat-pill px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-cream-300 text-espresso-700 whitespace-nowrap transition">Kue & Brownies</button>
+                        <button onclick="setCategory('Minuman')" data-cat="Minuman" class="cat-pill px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-cream-300 text-espresso-700 whitespace-nowrap transition">Kopi & Minuman</button>
+                    </div>
+                </div>
+
+                <!-- Product Grid (Proportional Auto-Fill) -->
+                <div class="flex-1 overflow-y-auto pr-1 custom-scroll">
+                    <div id="posProductGrid" class="pos-catalog-grid"></div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Fixed Cart Panel -->
+            <div class="w-full lg:w-[360px] xl:w-[390px] shrink-0 bg-white border-t lg:border-t-0 lg:border-l border-cream-300 flex flex-col h-[48vh] lg:h-full">
+                <!-- Customer & Order Info -->
+                <div class="p-3.5 border-b border-cream-200 bg-cream-50 shrink-0">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-extrabold uppercase tracking-wider text-espresso-800">Keranjang Pesanan</span>
+                        <button onclick="clearCart()" class="text-xs text-red-600 hover:underline font-semibold">Kosongkan</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="customerName" placeholder="Nama Pelanggan (Opsional)" class="px-3 py-1.5 bg-white border border-cream-300 rounded-lg text-xs focus:outline-none focus:border-bakery-500">
+                        <select id="orderType" class="px-2.5 py-1.5 bg-white border border-cream-300 rounded-lg text-xs font-semibold text-espresso-800 focus:outline-none">
+                            <option value="Takeaway">Takeaway / Bawa Pulang</option>
+                            <option value="Dine-In">Dine-In (Makan di Tempat)</option>
+                            <option value="Pesanan Box">Pesanan Box / Catering</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-3.5 space-y-2.5 custom-scroll"></div>
+
+                <!-- Cart Summary & Checkout -->
+                <div class="p-4 border-t border-cream-300 bg-cream-50/70 space-y-3 shrink-0">
+                    <div class="space-y-1 text-xs">
+                        <div class="flex justify-between text-espresso-700">
+                            <span>Subtotal (<span id="cartCountText">0</span> item)</span>
+                            <span id="cartSubtotalText" class="font-bold">Rp 0</span>
+                        </div>
+                        <div class="flex items-center justify-between text-espresso-700">
+                            <span>Diskon Promo</span>
+                            <select id="discountSelect" onchange="renderCart()" class="bg-white border border-cream-300 rounded px-2 py-0.5 text-xs font-semibold">
+                                <option value="0">Tanpa Diskon (0%)</option>
+                                <option value="5">Member Bakery (5%)</option>
+                                <option value="10">Promo Jumat Berkah (10%)</option>
+                                <option value="20">Happy Hour Malam (20%)</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-between text-sm font-extrabold text-espresso-900 pt-1.5 border-t border-cream-300">
+                            <span>Total Tagihan</span>
+                            <span id="cartTotalText" class="text-bakery-600 text-base">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method & Cash Input -->
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <button onclick="setPaymentMethod('Tunai')" id="pay-Tunai" class="pay-method-btn active-pay py-1.5 rounded-lg text-xs font-bold border">Tunai</button>
+                        <button onclick="setPaymentMethod('QRIS')" id="pay-QRIS" class="pay-method-btn py-1.5 rounded-lg text-xs font-bold border bg-white text-espresso-700 border-cream-300">QRIS</button>
+                        <button onclick="setPaymentMethod('Debit')" id="pay-Debit" class="pay-method-btn py-1.5 rounded-lg text-xs font-bold border bg-white text-espresso-700 border-cream-300">Debit/TF</button>
+                    </div>
+
+                    <div id="cashInputBox" class="space-y-1.5">
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="cashReceivedInput" oninput="calculateChange()" placeholder="Uang Diterima (Rp)" class="flex-1 px-3 py-1.5 bg-white border border-cream-300 rounded-lg text-xs font-bold focus:outline-none focus:border-bakery-500">
+                            <button onclick="setExactCash()" class="px-2.5 py-1.5 bg-cream-200 hover:bg-cream-300 text-espresso-800 rounded-lg text-xs font-bold">Uang Pas</button>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-espresso-700">Kembalian:</span>
+                            <span id="changeAmountText" class="font-extrabold text-emerald-700">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <button onclick="processCheckout()" class="w-full py-3 rounded-xl bg-bakery-600 hover:bg-bakery-700 text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Bayar & Cetak Struk</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- TAB 2: INVENTORY, BOM & STOCK OPNAME -->
+        <main id="tab-inventory" class="hidden flex-1 overflow-y-auto p-5 space-y-6 custom-scroll">
+            <!-- Inventory Header Actions -->
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-cream-300">
+                <div>
+                    <h3 class="font-extrabold text-base text-espresso-900">Manajemen Stok Etalase, Gudang Bahan Baku & Stock Opname</h3>
+                    <p class="text-xs text-espresso-700/70">Integrasi pemotongan bahan baku otomatis (Bill of Materials) & audit akurasi stok fisik</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="openProductionModal()" class="px-4 py-2 rounded-xl bg-bakery-600 hover:bg-bakery-700 text-white text-xs font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Produksi Roti Baru (Potong Bahan)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Finished Goods & Stock Opname Table -->
+            <div class="bg-white rounded-2xl border border-cream-300 overflow-hidden">
+                <div class="px-5 py-3.5 border-b border-cream-200 flex items-center justify-between">
+                    <h4 class="font-bold text-sm text-espresso-900"><i class="fa-solid fa-bread-slice text-bakery-500 mr-2"></i>Stok Produk Jadi & Audit Stock Opname Etalase</h4>
+                    <span class="text-xs text-espresso-700/70">Klik tombol <b>Sesuaikan Fisik</b> jika ada roti rusak/expired</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                        <tr class="bg-cream-100 text-espresso-800 border-b border-cream-300">
+                            <th class="py-3 px-4 font-bold">SKU & Nama Produk</th>
+                            <th class="py-3 px-4 font-bold">Kategori</th>
+                            <th class="py-3 px-4 font-bold text-right">HPP / Unit</th>
+                            <th class="py-3 px-4 font-bold text-right">Harga Jual</th>
+                            <th class="py-3 px-4 font-bold text-center">Stok Sistem</th>
+                            <th class="py-3 px-4 font-bold">Resep Bahan Baku (BOM / Unit)</th>
+                            <th class="py-3 px-4 font-bold text-center">Audit Stock Opname</th>
+                        </tr>
+                        </thead>
+                        <tbody id="inventoryProductTable" class="divide-y divide-cream-200"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Raw Materials Table -->
+            <div class="bg-white rounded-2xl border border-cream-300 overflow-hidden">
+                <div class="px-5 py-3.5 border-b border-cream-200 flex items-center justify-between">
+                    <h4 class="font-bold text-sm text-espresso-900"><i class="fa-solid fa-wheat-awn text-amber-600 mr-2"></i>Stok Bahan Baku Gudang (Otomatis Berkurang Saat Produksi)</h4>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                        <tr class="bg-cream-100 text-espresso-800 border-b border-cream-300">
+                            <th class="py-3 px-4 font-bold">Nama Bahan Baku</th>
+                            <th class="py-3 px-4 font-bold text-center">Stok Tersedia</th>
+                            <th class="py-3 px-4 font-bold text-center">Batas Minimum</th>
+                            <th class="py-3 px-4 font-bold text-center">Status</th>
+                            <th class="py-3 px-4 font-bold text-center">Aksi Restock Gudang</th>
+                        </tr>
+                        </thead>
+                        <tbody id="rawMaterialsTable" class="divide-y divide-cream-200"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <!-- TAB 3: FINANCIAL REPORT -->
+        <main id="tab-finance" class="hidden flex-1 overflow-y-auto p-5 space-y-6 custom-scroll">
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-2xl border border-cream-300">
+                    <span class="text-xs text-espresso-700/70 font-medium">Pendapatan Kotor (Omzet)</span>
+                    <h3 id="finOmzet" class="text-xl font-extrabold text-espresso-900 mt-1">Rp 0</h3>
+                    <p id="finTxCount" class="text-[11px] text-emerald-600 font-semibold mt-1">0 Transaksi Selesai</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-cream-300">
+                    <span class="text-xs text-espresso-700/70 font-medium">Total HPP Terjual (COGS)</span>
+                    <h3 id="finCOGS" class="text-xl font-extrabold text-amber-700 mt-1">Rp 0</h3>
+                    <p class="text-[11px] text-espresso-700/60 mt-1">Modal produksi roti terjual</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-cream-300">
+                    <span class="text-xs text-espresso-700/70 font-medium">Biaya Operasional & Waste</span>
+                    <h3 id="finExpenses" class="text-xl font-extrabold text-red-600 mt-1">Rp 0</h3>
+                    <p class="text-[11px] text-espresso-700/60 mt-1">Pengeluaran kas + roti rusak</p>
+                </div>
+                <div class="bg-espresso-900 text-white p-4 rounded-2xl">
+                    <span class="text-xs text-amber-300 font-medium">Estimasi Laba Bersih Harian</span>
+                    <h3 id="finNetProfit" class="text-xl font-extrabold text-emerald-400 mt-1">Rp 0</h3>
+                    <p id="finMargin" class="text-[11px] text-cream-200 mt-1">Net Margin: 0%</p>
+                </div>
+            </div>
+
+            <!-- Payment Breakdown & Operational Expense Input -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <!-- Payment Method Reconciliation -->
+                <div class="bg-white p-5 rounded-2xl border border-cream-300 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-sm text-espresso-900">Rekonsiliasi Metode Pembayaran</h4>
+                        <button onclick="exportFinanceCSV()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5">
+                            <i class="fa-solid fa-file-csv"></i> Ekspor CSV
+                        </button>
+                    </div>
+                    <div id="paymentBreakdownContainer" class="space-y-3 text-xs"></div>
+                </div>
+
+                <!-- Operational Cash Expense Form -->
+                <div class="bg-white p-5 rounded-2xl border border-cream-300 space-y-4">
+                    <h4 class="font-bold text-sm text-espresso-900">Catat Pengeluaran Kas Operasional Toko</h4>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" id="expenseDesc" placeholder="Contoh: Beli kemasan box / gas LPG" class="flex-1 px-3 py-2 border border-cream-300 rounded-xl text-xs">
+                        <input type="number" id="expenseAmount" placeholder="Nominal (Rp)" class="w-full sm:w-36 px-3 py-2 border border-cream-300 rounded-xl text-xs">
+                        <button onclick="addOperationalExpense()" class="px-4 py-2 bg-bakery-600 hover:bg-bakery-700 text-white font-bold text-xs rounded-xl">Simpan</button>
+                    </div>
+                    <div id="expenseListContainer" class="space-y-2 max-h-40 overflow-y-auto text-xs"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- TAB 4: STOCK LOGS & TRANSACTION HISTORY -->
+        <main id="tab-logs" class="hidden flex-1 overflow-y-auto p-5 space-y-6 custom-scroll">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <!-- Stock Card Mutation Log -->
+                <div class="bg-white rounded-2xl border border-cream-300 overflow-hidden">
+                    <div class="px-5 py-3.5 border-b border-cream-200">
+                        <h4 class="font-bold text-sm text-espresso-900">Kartu Stok Digital (Log Mutasi Otomatis)</h4>
+                    </div>
+                    <div id="stockLogsContainer" class="p-4 space-y-2.5 max-h-[65vh] overflow-y-auto text-xs custom-scroll"></div>
+                </div>
+
+                <!-- Daily Transaction History -->
+                <div class="bg-white rounded-2xl border border-cream-300 overflow-hidden">
+                    <div class="px-5 py-3.5 border-b border-cream-200">
+                        <h4 class="font-bold text-sm text-espresso-900">Riwayat Struk Penjualan Hari Ini</h4>
+                    </div>
+                    <div id="transactionHistoryContainer" class="p-4 space-y-2.5 max-h-[65vh] overflow-y-auto text-xs custom-scroll"></div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</div>
+
+<!-- MODAL: PRODUKSI ROTI (BOM) -->
+<div id="productionModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 space-y-4 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-cream-200 pb-3">
+            <h3 class="font-extrabold text-sm text-espresso-900">Produksi Roti Baru (Potong Bahan Baku BOM)</h3>
+            <button onclick="closeProductionModal()" class="text-espresso-700 hover:text-red-600"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="space-y-3 text-xs">
+            <div>
+                <label class="font-bold block mb-1">Pilih Produk Bakery:</label>
+                <select id="prodSelectProduct" class="w-full px-3 py-2 border border-cream-300 rounded-xl font-semibold"></select>
+            </div>
+            <div>
+                <label class="font-bold block mb-1">Jumlah Produksi Masuk Etalase (Pcs):</label>
+                <input type="number" id="prodQtyInput" value="10" min="1" class="w-full px-3 py-2 border border-cream-300 rounded-xl font-bold">
+            </div>
+            <p class="text-[11px] text-espresso-700/70 bg-amber-50 p-2.5 rounded-xl border border-amber-200">
+                Sistem otomatis memotong stok Tepung, Butter, Gula, atau bahan terkait sesuai resep produk per unit.
+            </p>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+            <button onclick="closeProductionModal()" class="px-4 py-2 rounded-xl bg-cream-200 text-xs font-bold">Batal</button>
+            <button onclick="submitProductionBOM()" class="px-4 py-2 rounded-xl bg-bakery-600 text-white text-xs font-bold">Proses Produksi</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: RECEIPT / Z-REPORT -->
+<div id="receiptModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
+        <div id="receiptPrintArea" class="font-mono text-xs space-y-2 text-espresso-900"></div>
+        <div class="flex gap-2 pt-3 border-t border-cream-200">
+            <button onclick="closeReceiptModal()" class="flex-1 py-2 rounded-xl bg-cream-200 text-xs font-bold">Tutup</button>
+            <button onclick="window.print()" class="flex-1 py-2 rounded-xl bg-espresso-900 text-white text-xs font-bold"><i class="fa-solid fa-print mr-1"></i>Cetak</button>
+        </div>
+    </div>
+</div>
+
+<!-- Custom JS -->
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,2648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPDB Online SDN 05 RAJAWALI - Terbang Tinggi Raih Prestasi!</title>
+    <!-- Google Fonts: Fredoka (Judul Ceria) & Nunito (Teks Ramah Anak/Orang Tua) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & RESET (Murni CSS Embedded)
+           ========================================================================== */
+        :root {
+            --sky-blue: #38bdf8;
+            --sky-light: #e0f2fe;
+            --sky-deep: #0284c7;
+            --sun-yellow: #facc15;
+            --sun-orange: #fb923c;
+            --coral-red: #f43f5e;
+            --grass-green: #22c55e;
+            --grass-dark: #15803d;
+            --soft-purple: #a855f7;
+            --purple-light: #f3e8ff;
+            --cream-bg: #fffdf7;
+            --white: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #475569;
+            --border-radius-lg: 28px;
+            --border-radius-md: 18px;
+            --border-radius-sm: 12px;
+            --shadow-card: 0 12px 24px -6px rgba(14, 116, 144, 0.15), 0 4px 8px -2px rgba(14, 116, 144, 0.08);
+            --shadow-3d-blue: 0 6px 0 #0369a1;
+            --shadow-3d-yellow: 0 6px 0 #ca8a04;
+            --shadow-3d-green: 0 6px 0 #15803d;
+            --shadow-3d-red: 0 6px 0 #be123c;
+            --shadow-3d-purple: 0 6px 0 #7e22ce;
+            --font-heading: 'Fredoka', sans-serif;
+            --font-body: 'Nunito', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            background-color: var(--cream-bg);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, .font-kid {
+            font-family: var(--font-heading);
+            letter-spacing: 0.3px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        button, input, select, textarea {
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+
+        /* ==========================================================================
+           2. KEYFRAME ANIMATIONS (Karakter & Langit Hidup)
+           ========================================================================== */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-14px) rotate(1.5deg); }
+        }
+
+        @keyframes wingFlapLeft {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-22deg) translateY(-4px); }
+        }
+
+        @keyframes wingFlapRight {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(22deg) translateY(-4px); }
+        }
+
+        @keyframes eyeBlink {
+            0%, 45%, 55%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.08); }
+        }
+
+        @keyframes sunSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes cloudDrift1 {
+            0% { transform: translateX(-150px); }
+            100% { transform: translateX(calc(100vw + 150px)); }
+        }
+
+        @keyframes cloudDrift2 {
+            0% { transform: translateX(calc(100vw + 150px)); }
+            100% { transform: translateX(-150px); }
+        }
+
+        @keyframes bounceKid {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-4deg); }
+            50% { transform: rotate(4deg); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
+            50% { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(250, 204, 21, 0); }
+        }
+
+        @keyframes paperPlaneFly {
+            0% { transform: translate(-10vw, 80px) rotate(12deg) scale(0.8); opacity: 0; }
+            15% { opacity: 1; }
+            50% { transform: translate(45vw, -30px) rotate(-5deg) scale(1); }
+            85% { opacity: 1; }
+            100% { transform: translate(110vw, -90px) rotate(-15deg) scale(0.7); opacity: 0; }
+        }
+
+        @keyframes bubbleFade {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+            50% { transform: translateY(-18px) scale(1.2); opacity: 1; }
+        }
+
+        @keyframes grassSway {
+            0%, 100% { transform: skewX(0deg); }
+            50% { transform: skewX(4deg); }
+        }
+
+        /* ==========================================================================
+           3. STICKY NAVBAR MELAYANG
+           ========================================================================== */
+        .navbar-wrapper {
+            position: sticky;
+            top: 12px;
+            z-index: 1000;
+            padding: 0 20px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border: 3px solid var(--sky-blue);
+            border-radius: 50px;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .brand-logo-svg {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 3px 4px rgba(0,0,0,0.12));
+            transition: transform 0.3s ease;
+        }
+
+        .brand:hover .brand-logo-svg {
+            transform: rotate(-10deg) scale(1.1);
+        }
+
+        .brand-text h1 {
+            font-size: 1.35rem;
+            color: var(--sky-deep);
+            line-height: 1.1;
+        }
+
+        .brand-text span {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--sun-orange);
+            letter-spacing: 0.5px;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            transition: all 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--sky-light);
+            color: var(--sky-deep);
+            transform: translateY(-2px);
+        }
+
+        .btn-cta-nav {
+            background: linear-gradient(135deg, #facc15, #fb923c);
+            color: #7c2d12 !important;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            padding: 10px 22px !important;
+            border-radius: 30px;
+            box-shadow: 0 4px 0 #d97706;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            animation: pulseGlow 2.5s infinite;
+        }
+
+        .btn-cta-nav:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 7px 0 #d97706;
+        }
+
+        .btn-cta-nav:active {
+            transform: translateY(2px) !important;
+            box-shadow: 0 2px 0 #d97706;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--sky-light);
+            color: var(--sky-deep);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ==========================================================================
+           4. HERO SECTION & ANIMATED SKY STAGE
+           ========================================================================== */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(180deg, #7dd3fc 0%, #bae6fd 55%, #fef9c3 90%, var(--cream-bg) 100%);
+            padding: 50px 20px 100px;
+            margin-top: -80px;
+            padding-top: 120px;
+            overflow: hidden;
+        }
+
+        /* Dekorasi Langit Hidup */
+        .sky-decorations {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .sun-character {
+            position: absolute;
+            top: 95px;
+            right: 7%;
+            width: 110px;
+            height: 110px;
+            z-index: 2;
+        }
+
+        .sun-rays {
+            transform-origin: center;
+            animation: sunSpin 22s linear infinite;
+        }
+
+        .cloud-anim {
+            position: absolute;
+            opacity: 0.9;
+        }
+
+        .cloud-1 { top: 110px; left: -120px; width: 150px; animation: cloudDrift1 45s linear infinite; }
+        .cloud-2 { top: 220px; right: -120px; width: 120px; animation: cloudDrift2 55s linear infinite; opacity: 0.75; }
+        .cloud-3 { top: 65px; left: 30%; width: 100px; animation: floatSlow 6s ease-in-out infinite; }
+
+        .hot-air-balloon {
+            position: absolute;
+            top: 150px;
+            left: 5%;
+            width: 85px;
+            animation: floatSlow 5.5s ease-in-out infinite;
+        }
+
+        .paper-plane {
+            position: absolute;
+            top: 180px;
+            left: 0;
+            width: 60px;
+            animation: paperPlaneFly 16s ease-in-out infinite;
+        }
+
+        .hero-container {
+            position: relative;
+            z-index: 5;
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--white);
+            color: var(--sky-deep);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.92rem;
+            border: 2px solid var(--sun-yellow);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            font-size: 3.1rem;
+            line-height: 1.15;
+            color: #0c4a6e;
+            margin-bottom: 18px;
+            text-shadow: 2px 3px 0px #ffffff;
+        }
+
+        .hero-title .highlight-orange {
+            color: #ea580c;
+            display: inline-block;
+            background: #fef08a;
+            padding: 0 12px;
+            border-radius: 16px;
+            transform: rotate(-1.5deg);
+            border: 2px dashed #f97316;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: #334155;
+            font-weight: 600;
+            margin-bottom: 24px;
+            max-width: 580px;
+        }
+
+        /* Countdown Box */
+        .countdown-card {
+            background: rgba(255, 255, 255, 0.92);
+            border: 3px solid var(--sky-blue);
+            border-radius: var(--border-radius-md);
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            max-width: 520px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .countdown-label {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--coral-red);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+
+        .time-box {
+            background: linear-gradient(180deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #7dd3fc;
+            border-radius: 12px;
+            padding: 8px 4px;
+        }
+
+        .time-box span {
+            display: block;
+            font-family: var(--font-heading);
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--sky-deep);
+            line-height: 1.1;
+        }
+
+        .time-box small {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .btn-3d {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: var(--font-heading);
+            font-size: 1.12rem;
+            font-weight: 600;
+            padding: 15px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 3px solid #fff;
+        }
+
+        .btn-3d-primary {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: var(--white);
+            box-shadow: var(--shadow-3d-green);
+        }
+
+        .btn-3d-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 0 #15803d;
+        }
+
+        .btn-3d-secondary {
+            background: var(--white);
+            color: var(--sky-deep);
+            border-color: var(--sky-blue);
+            box-shadow: 0 6px 0 #0284c7;
+        }
+
+        .btn-3d-secondary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 0 #0284c7;
+            background: var(--sky-light);
+        }
+
+        /* Panggung Maskot Raja si Elang Rajawali Cilik */
+        .mascot-stage {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .speech-bubble {
+            position: relative;
+            background: var(--white);
+            border: 3px solid var(--sun-orange);
+            border-radius: 24px;
+            padding: 14px 20px;
+            max-width: 340px;
+            text-align: center;
+            font-weight: 800;
+            color: #9a3412;
+            font-size: 0.98rem;
+            box-shadow: 0 8px 20px rgba(251, 146, 60, 0.25);
+            margin-bottom: 14px;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 10;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 14px 12px 0;
+            border-style: solid;
+            border-color: var(--sun-orange) transparent;
+        }
+
+        .speech-bubble.pop-anim {
+            transform: scale(1.08) rotate(-2deg);
+        }
+
+        .mascot-interactive-wrapper {
+            position: relative;
+            cursor: pointer;
+            width: 340px;
+            height: 340px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        .mascot-interactive-wrapper:hover {
+            filter: drop-shadow(0 12px 20px rgba(2, 132, 199, 0.3));
+        }
+
+        /* Animasi bagian tubuh SVG Rajawali */
+        .eagle-wing-l {
+            transform-origin: 110px 175px;
+            animation: wingFlapLeft 1.6s ease-in-out infinite;
+        }
+
+        .eagle-wing-r {
+            transform-origin: 210px 175px;
+            animation: wingFlapRight 1.6s ease-in-out infinite;
+        }
+
+        .eagle-eyes {
+            transform-origin: 160px 130px;
+            animation: eyeBlink 4.2s infinite;
+        }
+
+        .click-hint-badge {
+            background: var(--coral-red);
+            color: var(--white);
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            padding: 6px 16px;
+            border-radius: 30px;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 10px rgba(244, 63, 94, 0.4);
+            margin-top: -10px;
+            z-index: 10;
+            cursor: pointer;
+            animation: bounceKid 2s infinite;
+        }
+
+        /* Statistik Singkat Menyenangkan */
+        .stats-bar {
+            position: relative;
+            z-index: 6;
+            max-width: 1180px;
+            margin: 50px auto 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-item {
+            background: var(--white);
+            border-radius: var(--border-radius-md);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 3px solid #e2e8f0;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-6px) rotate(1deg);
+        }
+
+        .stat-item:nth-child(1) { border-color: var(--sky-blue); }
+        .stat-item:nth-child(2) { border-color: var(--sun-yellow); }
+        .stat-item:nth-child(3) { border-color: var(--grass-green); }
+        .stat-item:nth-child(4) { border-color: var(--soft-purple); }
+
+        .stat-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .stat-info h3 {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .stat-info p {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================================================
+           5. PARADE KARAKTER SISWA-SISWI CERIA (SVG Animated Strip)
+           ========================================================================== */
+        .kids-parade-section {
+            max-width: 1200px;
+            margin: 20px auto 60px;
+            padding: 0 20px;
+        }
+
+        .parade-banner {
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            border: 3px dashed var(--grass-green);
+            border-radius: var(--border-radius-lg);
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+        }
+
+        .parade-title {
+            font-size: 1.75rem;
+            color: var(--grass-dark);
+            margin-bottom: 8px;
+        }
+
+        .parade-subtitle {
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 28px;
+        }
+
+        .kids-characters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .kid-char-card {
+            background: var(--white);
+            border-radius: 22px;
+            padding: 18px 14px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+
+        .kid-char-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            border-color: var(--sun-orange);
+            box-shadow: 0 14px 25px rgba(251, 146, 60, 0.2);
+        }
+
+        .kid-svg-stage {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .anim-bounce { animation: bounceKid 2.6s ease-in-out infinite; }
+        .anim-wiggle { animation: wiggle 2.4s ease-in-out infinite; }
+        .anim-float { animation: floatSlow 3.2s ease-in-out infinite; }
+
+        .kid-char-card h4 {
+            font-size: 1.15rem;
+            color: var(--sky-deep);
+            margin-bottom: 4px;
+        }
+
+        .kid-char-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           6. SECTION HEADINGS GLOBAL
+           ========================================================================== */
+        .section-padding {
+            padding: 70px 20px;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 48px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: var(--purple-light);
+            color: #7e22ce;
+            font-family: var(--font-heading);
+            font-size: 0.92rem;
+            font-weight: 600;
+            padding: 6px 18px;
+            border-radius: 30px;
+            margin-bottom: 12px;
+            border: 2px solid #d8b4fe;
+        }
+
+        .section-header h2 {
+            font-size: 2.4rem;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           7. KEUNGGULAN & EKSTRAKURIKULER (BOUNCY CARDS)
+           ========================================================================== */
+        .tab-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 36px;
+        }
+
+        .tab-btn {
+            background: var(--white);
+            color: var(--text-muted);
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 40px;
+            border: 3px solid #cbd5e1;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--sky-blue);
+            color: var(--white);
+            border-color: var(--sky-deep);
+            box-shadow: 0 5px 0 var(--sky-deep);
+            transform: translateY(-2px);
+        }
+
+        .bouncy-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .bouncy-card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 28px 22px;
+            text-align: center;
+            border: 3px solid #e2e8f0;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bouncy-card:hover {
+            transform: translateY(-12px) scale(1.02);
+        }
+
+        .card-blue { border-color: #7dd3fc; box-shadow: 0 8px 0 #38bdf8; }
+        .card-yellow { border-color: #fde047; box-shadow: 0 8px 0 #facc15; }
+        .card-green { border-color: #86efac; box-shadow: 0 8px 0 #22c55e; }
+        .card-purple { border-color: #d8b4fe; box-shadow: 0 8px 0 #a855f7; }
+
+        .card-icon-wrap {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 18px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bouncy-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .bouncy-card p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .badge-ekskul {
+            display: inline-block;
+            margin-top: 14px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: #f1f5f9;
+            color: var(--sky-deep);
+        }
+
+        /* ==========================================================================
+           8. PETA PETUALANGAN PENDAFTARAN & CHECKLIST SYARAT
+           ========================================================================== */
+        .adventure-section {
+            background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-top: 4px dashed #7dd3fc;
+            border-bottom: 4px dashed #7dd3fc;
+            padding: 70px 20px;
+        }
+
+        .adventure-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .map-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            position: relative;
+            margin-bottom: 50px;
+        }
+
+        .step-island {
+            background: var(--white);
+            border: 3px solid var(--sky-blue);
+            border-radius: 26px;
+            padding: 26px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 8px 0 #0284c7;
+            transition: transform 0.3s ease;
+        }
+
+        .step-island:hover {
+            transform: translateY(-8px);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--sun-orange);
+            color: var(--white);
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 4px 18px;
+            border-radius: 20px;
+            border: 3px solid var(--white);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        }
+
+        .step-emoji {
+            font-size: 2.8rem;
+            margin: 12px 0;
+            display: inline-block;
+            animation: bounceKid 3s infinite;
+        }
+
+        .step-island h3 {
+            font-size: 1.2rem;
+            color: var(--sky-deep);
+            margin-bottom: 8px;
+        }
+
+        .step-island p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Checklist Persyaratan & Kuota Box */
+        .prep-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .checklist-card, .quota-card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            border: 3px solid var(--sky-blue);
+            box-shadow: var(--shadow-card);
+        }
+
+        .checklist-card h3, .quota-card h3 {
+            font-size: 1.45rem;
+            color: var(--sky-deep);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-wrapper {
+            background: #e2e8f0;
+            height: 22px;
+            border-radius: 20px;
+            margin: 16px 0 22px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #cbd5e1;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 50%;
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+            border-radius: 20px;
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .progress-text {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--grass-dark);
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .check-item:hover {
+            border-color: var(--sky-blue);
+            background: var(--sky-light);
+        }
+
+        .check-item.checked {
+            background: #dcfce7;
+            border-color: var(--grass-green);
+        }
+
+        .check-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--grass-green);
+            cursor: pointer;
+        }
+
+        .check-item span {
+            font-weight: 700;
+            font-size: 0.96rem;
+            color: var(--text-dark);
+        }
+
+        .quota-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 0;
+            border-bottom: 2px dashed #e2e8f0;
+            font-weight: 700;
+        }
+
+        .quota-list li:last-child {
+            border-bottom: none;
+        }
+
+        .quota-pill {
+            background: var(--sky-light);
+            color: var(--sky-deep);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           9. FORMULIR PENDAFTARAN ONLINE INTERAKTIF & KARTU ID DIGITAL
+           ========================================================================== */
+        .form-container-card {
+            background: var(--white);
+            border: 4px solid var(--sun-yellow);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            box-shadow: 0 16px 35px rgba(250, 204, 21, 0.2);
+            position: relative;
+        }
+
+        .form-step-title {
+            background: #fef9c3;
+            color: #854d0e;
+            padding: 12px 20px;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            margin-bottom: 22px;
+            border-left: 6px solid var(--sun-orange);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            padding: 13px 16px;
+            border-radius: 14px;
+            border: 2px solid #cbd5e1;
+            background: #f8fafc;
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--sky-blue);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+        }
+
+        .age-badge-output {
+            margin-top: 4px;
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 800;
+            background: var(--sky-light);
+            color: var(--sky-deep);
+        }
+
+        /* Avatar & Cita-Cita Selector */
+        .avatar-selector, .dream-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .dream-selector {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .selectable-tile {
+            border: 3px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 14px 10px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8fafc;
+            transition: all 0.25s ease;
+        }
+
+        .selectable-tile:hover {
+            border-color: #93c5fd;
+            transform: translateY(-3px);
+        }
+
+        .selectable-tile.selected {
+            border-color: var(--sun-orange);
+            background: #fff7ed;
+            box-shadow: 0 5px 0 var(--sun-orange);
+            transform: translateY(-3px);
+        }
+
+        .selectable-tile span {
+            display: block;
+            font-weight: 800;
+            font-size: 0.9rem;
+            margin-top: 6px;
+            color: var(--text-dark);
+        }
+
+        /* Kartu Bukti Pendaftaran Digital (Modal/Card Result) */
+        .id-card-result-wrap {
+            display: none;
+            margin-top: 36px;
+            background: linear-gradient(135deg, #e0f2fe 0%, #fef9c3 100%);
+            border: 4px solid var(--sky-deep);
+            border-radius: 28px;
+            padding: 32px;
+            text-align: center;
+            animation: bounceKid 0.8s ease;
+        }
+
+        .student-id-card {
+            max-width: 540px;
+            margin: 20px auto;
+            background: var(--white);
+            border-radius: 22px;
+            border: 3px solid var(--sky-blue);
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(2, 132, 199, 0.2);
+            text-align: left;
+        }
+
+        .id-card-header {
+            background: linear-gradient(90deg, #0284c7, #38bdf8);
+            color: var(--white);
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .id-card-body {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .id-avatar-box {
+            background: var(--sky-light);
+            border: 3px solid var(--sun-yellow);
+            border-radius: 18px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .id-details p {
+            margin-bottom: 6px;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+        }
+
+        .id-details strong {
+            color: var(--text-dark);
+            font-weight: 800;
+        }
+
+        .reg-number-pill {
+            display: inline-block;
+            background: #fef08a;
+            color: #854d0e;
+            font-family: var(--font-heading);
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 8px;
+            border: 1px dashed #ca8a04;
+            margin-bottom: 10px;
+        }
+
+        /* ==========================================================================
+           10. LIVE TABEL PENDAFTAR & CEK PENGUMUMAN
+           ========================================================================== */
+        .table-card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            border: 3px solid var(--sky-blue);
+            padding: 32px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .search-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 260px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .ppdb-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .ppdb-table th {
+            background: var(--sky-light);
+            color: var(--sky-deep);
+            font-family: var(--font-heading);
+            padding: 14px 16px;
+            font-size: 0.95rem;
+        }
+
+        .ppdb-table th:first-child { border-radius: 14px 0 0 14px; }
+        .ppdb-table th:last-child { border-radius: 0 14px 14px 0; }
+
+        .ppdb-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 700;
+            font-size: 0.94rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
+
+        .status-diterima { background: #dcfce7; color: #15803d; }
+        .status-verifikasi { background: #dbeafe; color: #1d4ed8; }
+        .status-menunggu { background: #fef9c3; color: #a16207; }
+
+        /* ==========================================================================
+           11. FOOTER TAMAN SEKOLAH & RUMPUT BERGOYANG
+           ========================================================================== */
+        .school-garden-footer {
+            position: relative;
+            margin-top: 80px;
+            background: linear-gradient(180deg, #15803d 0%, #14532d 100%);
+            color: var(--white);
+            padding: 60px 20px 30px;
+        }
+
+        .grass-top-border {
+            position: absolute;
+            top: -45px;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            overflow: hidden;
+            line-height: 0;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.4rem;
+            color: var(--sun-yellow);
+            margin-bottom: 16px;
+        }
+
+        .footer-col p, .footer-col li {
+            font-size: 0.95rem;
+            color: #dcfce7;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+            font-size: 0.9rem;
+            color: #bbf7d0;
+        }
+
+        /* Confetti Canvas Overlay */
+        #confettiCanvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ==========================================================================
+           12. RESPONSIVE DESIGN (Mobile & Tablet)
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; }
+            .hero-subtitle, .countdown-card { margin-left: auto; margin-right: auto; }
+            .hero-buttons { justify-content: center; }
+            .stats-bar, .kids-characters-grid, .bouncy-grid, .map-steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .prep-grid, .footer-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 76px;
+                left: 20px;
+                right: 20px;
+                background: var(--white);
+                flex-direction: column;
+                padding: 20px;
+                border-radius: 24px;
+                border: 3px solid var(--sky-blue);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            }
+            .nav-links.show { display: flex; }
+            .mobile-menu-btn { display: flex; }
+            .hero-title { font-size: 2.2rem; }
+            .form-grid, .dream-selector { grid-template-columns: 1fr; }
+            .id-card-body { grid-template-columns: 1fr; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-bar, .kids-characters-grid, .bouncy-grid, .map-steps-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-container-card { padding: 22px 16px; }
+        }
+
+        /* Print Media Style untuk Cetak Kartu Bukti Pendaftaran */
+        @media print {
+            body * { visibility: hidden; }
+            #printableCardArea, #printableCardArea * { visibility: visible; }
+            #printableCardArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Canvas untuk Perayaan Confetti Saat Submit Pendaftaran -->
+<canvas id="confettiCanvas"></canvas>
+
+<!-- ======================================================================
+     1. STICKY NAVBAR MELAYANG
+     ====================================================================== -->
+<header class="navbar-wrapper">
+    <nav class="navbar">
+        <a href="#beranda" class="brand">
+            <!-- SVG Ikon Mini Elang Rajawali -->
+            <svg class="brand-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="#38bdf8" stroke="#facc15" stroke-width="5"/>
+                <!-- Kepala Rajawali -->
+                <path d="M26 55 C26 30, 74 30, 74 55 C74 72, 62 82, 50 82 C38 82, 26 72, 26 55 Z" fill="#854d0e"/>
+                <!-- Jambul -->
+                <path d="M42 30 L50 16 L56 28 L64 19 L62 33" fill="#854d0e"/>
+                <!-- Wajah Putih/Krem -->
+                <ellipse cx="40" cy="54" rx="11" ry="12" fill="#fef9c3"/>
+                <ellipse cx="60" cy="54" rx="11" ry="12" fill="#fef9c3"/>
+                <!-- Mata -->
+                <circle cx="40" cy="53" r="5" fill="#1e293b"/>
+                <circle cx="42" cy="51" r="2" fill="#ffffff"/>
+                <circle cx="60" cy="53" r="5" fill="#1e293b"/>
+                <circle cx="62" cy="51" r="2" fill="#ffffff"/>
+                <!-- Paruh Kuning -->
+                <path d="M43 58 Q50 53 57 58 L50 70 Z" fill="#facc15" stroke="#ea580c" stroke-width="2"/>
+                <!-- Topi SD Merah -->
+                <path d="M30 36 Q50 22 70 36 Z" fill="#e11d48"/>
+                <path d="M35 35 L68 35 L76 40 L35 38 Z" fill="#be123c"/>
+            </svg>
+            <div class="brand-text">
+                <h1>SDN 05 RAJAWALI</h1>
+                <span>✨ CERDAS • CERIA • BERKARAKTER</span>
+            </div>
+        </a>
+
+        <div class="nav-links" id="navLinks">
+            <a href="#beranda">Beranda</a>
+            <a href="#keunggulan">Keunggulan & Ekskul</a>
+            <a href="#alur">Alur & Syarat</a>
+            <a href="#pengumuman">Cek Pengumuman</a>
+            <a href="#form-daftar" class="btn-cta-nav">🚀 Daftar Sekarang!</a>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu Navigasi">☰</button>
+    </nav>
+</header>
+
+<!-- ======================================================================
+     2. HERO SECTION DENGAN PANGGUNG LANGIT & MASKOT ANIMASI
+     ====================================================================== -->
+<section class="hero-section" id="beranda">
+    <!-- Dekorasi Langit Animasi -->
+    <div class="sky-decorations">
+        <!-- Matahari Tersenyum Berputar -->
+        <svg class="sun-character" viewBox="0 0 120 120">
+            <g class="sun-rays" fill="#fde047">
+                <polygon points="60,2 67,18 53,18"/>
+                <polygon points="60,118 67,102 53,102"/>
+                <polygon points="2,60 18,67 18,53"/>
+                <polygon points="118,60 102,67 102,53"/>
+                <polygon points="18,18 32,26 24,34"/>
+                <polygon points="102,18 88,26 96,34"/>
+                <polygon points="18,102 32,94 24,86"/>
+                <polygon points="102,102 88,94 96,86"/>
+            </g>
+            <circle cx="60" cy="60" r="36" fill="#facc15" stroke="#fb923c" stroke-width="4"/>
+            <circle cx="48" cy="54" r="4" fill="#7c2d12"/>
+            <circle cx="72" cy="54" r="4" fill="#7c2d12"/>
+            <circle cx="42" cy="62" r="5" fill="#fb7185" opacity="0.6"/>
+            <circle cx="78" cy="62" r="5" fill="#fb7185" opacity="0.6"/>
+            <path d="M48 66 Q60 76 72 66" fill="none" stroke="#7c2d12" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+
+        <!-- Awan Bergerak -->
+        <svg class="cloud-anim cloud-1" viewBox="0 0 160 80">
+            <path d="M35 65 L125 65 C140 65 150 55 150 42 C150 30 138 22 126 23 C120 10 104 4 88 8 C74 2 55 10 50 24 C34 22 20 33 20 46 C20 58 26 65 35 65 Z" fill="#ffffff"/>
+        </svg>
+        <svg class="cloud-anim cloud-2" viewBox="0 0 160 80">
+            <path d="M35 65 L125 65 C140 65 150 55 150 42 C150 30 138 22 126 23 C120 10 104 4 88 8 C74 2 55 10 50 24 C34 22 20 33 20 46 C20 58 26 65 35 65 Z" fill="#ffffff"/>
+        </svg>
+        <svg class="cloud-anim cloud-3" viewBox="0 0 160 80">
+            <path d="M35 65 L125 65 C140 65 150 55 150 42 C150 30 138 22 126 23 C120 10 104 4 88 8 C74 2 55 10 50 24 C34 22 20 33 20 46 C20 58 26 65 35 65 Z" fill="#ffffff"/>
+        </svg>
+
+        <!-- Balon Udara Melayang -->
+        <svg class="hot-air-balloon" viewBox="0 0 100 130">
+            <path d="M50 10 C22 10 12 45 28 75 L40 92 L60 92 L72 75 C88 45 78 10 50 10 Z" fill="#f43f5e"/>
+            <path d="M50 10 C36 10 30 45 42 75 L45 92 L55 92 L58 75 C70 45 64 10 50 10 Z" fill="#facc15"/>
+            <line x1="42" y1="92" x2="44" y2="104" stroke="#78350f" stroke-width="2"/>
+            <line x1="58" y1="92" x2="56" y2="104" stroke="#78350f" stroke-width="2"/>
+            <rect x="40" y="104" width="20" height="15" rx="4" fill="#b45309"/>
+        </svg>
+
+        <!-- Pesawat Kertas Melintas -->
+        <svg class="paper-plane" viewBox="0 0 100 80">
+            <polygon points="5,40 95,10 60,70 45,48" fill="#ffffff" stroke="#0284c7" stroke-width="3"/>
+            <polygon points="45,48 95,10 52,58" fill="#bae6fd"/>
+        </svg>
+    </div>
+
+    <div class="hero-container">
+        <!-- Kolom Kiri: Teks & Countdown -->
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>🎒 PPDB Tahun Ajaran 2026 / 2027 Gelombang 1 Dibuka!</span>
+            </div>
+            <h2 class="hero-title">
+                Terbang Tinggi Raih Prestasi Bersama <span class="highlight-orange">SDN 05 RAJAWALI!</span>
+            </h2>
+            <p class="hero-subtitle">
+                Sekolah ramah anak dengan lingkungan belajar penuh petualangan seru, guru penyayang, dan fasilitas modern. Yuk bergabung menjadi keluarga besar Rajawali Cilik!
+            </p>
+
+            <!-- Countdown Penutupan Gelombang -->
+            <div class="countdown-card">
+                <div class="countdown-label">
+                    ⏰ Batas Waktu Pendaftaran Gelombang I:
+                </div>
+                <div class="countdown-grid">
+                    <div class="time-box">
+                        <span id="cd-days">14</span>
+                        <small>Hari</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="cd-hours">08</span>
+                        <small>Jam</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="cd-minutes">45</span>
+                        <small>Menit</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="cd-seconds">30</span>
+                        <small>Detik</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="#form-daftar" class="btn-3d btn-3d-primary">
+                    ✏️ Isi Formulir Pendaftaran
+                </a>
+                <a href="#alur" class="btn-3d btn-3d-secondary">
+                    🗺️ Lihat Peta Petualangan
+                </a>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Maskot Interaktif "Raja si Elang Rajawali Cilik" -->
+        <div class="mascot-stage">
+            <div class="speech-bubble" id="mascotSpeech">
+                "Halo teman-teman! Aku <strong>Raja si Elang Cilik</strong>. Yuk sekolah dan bermain seru di SDN 05 Rajawali! Klik aku ya!"
+            </div>
+
+            <div class="mascot-interactive-wrapper" id="mascotCharacter" title="Klik Raja si Elang untuk sapaan baru!">
+                <!-- Custom Animated SVG: Raja si Elang Rajawali Cilik berseragam SD Merah Putih -->
+                <svg viewBox="0 0 320 320" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Bayangan Bawah Melayang -->
+                    <ellipse cx="160" cy="298" rx="68" ry="12" fill="rgba(2, 132, 199, 0.18)"/>
+
+                    <!-- Sayap Kiri (Mengepak) -->
+                    <g class="eagle-wing-l">
+                        <path d="M110 170 C55 145, 25 175, 42 215 C55 215, 72 205, 80 218 C92 212, 105 202, 115 195 Z" fill="#78350f" stroke="#451a03" stroke-width="3"/>
+                        <path d="M98 178 C62 162, 42 182, 54 205" fill="none" stroke="#b45309" stroke-width="4" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Sayap Kanan (Mengepak) -->
+                    <g class="eagle-wing-r">
+                        <path d="M210 170 C265 145, 295 175, 278 215 C265 215, 248 205, 240 218 C228 212, 215 202, 205 195 Z" fill="#78350f" stroke="#451a03" stroke-width="3"/>
+                        <path d="M222 178 C258 162, 278 182, 266 205" fill="none" stroke="#b45309" stroke-width="4" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Kaki Rajawali & Sepatu Sekolah Hitam -->
+                    <path d="M135 255 L135 280 M125 282 L145 282" stroke="#f59e0b" stroke-width="7" stroke-linecap="round"/>
+                    <path d="M185 255 L185 280 M175 282 L195 282" stroke="#f59e0b" stroke-width="7" stroke-linecap="round"/>
+                    <ellipse cx="133" cy="284" rx="18" ry="9" fill="#1e293b"/>
+                    <ellipse cx="187" cy="284" rx="18" ry="9" fill="#1e293b"/>
+
+                    <!-- Badan & Seragam SD (Kemeja Putih & Celana Merah) -->
+                    <path d="M106 165 C102 215, 112 256, 160 256 C208 256, 218 215, 214 165 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+                    <!-- Celana Merah SD -->
+                    <path d="M110 222 Q160 230 210 222 C206 248, 192 260, 160 260 C128 260, 114 248, 110 222 Z" fill="#e11d48" stroke="#9f1239" stroke-width="3"/>
+                    <!-- Sabuk & Dasi SD Merah -->
+                    <rect x="110" y="218" width="100" height="8" fill="#1e293b"/>
+                    <rect x="150" y="216" width="20" height="12" rx="3" fill="#facc15"/>
+                    <!-- Kerah Putih & Dasi Merah -->
+                    <polygon points="135,165 160,182 145,190" fill="#e2e8f0"/>
+                    <polygon points="185,165 160,182 175,190" fill="#e2e8f0"/>
+                    <polygon points="154,176 166,176 170,210 160,218 150,210" fill="#e11d48"/>
+                    <!-- Badge Saku SD -->
+                    <rect x="176" y="186" width="18" height="20" rx="4" fill="#fef08a" stroke="#ca8a04" stroke-width="2"/>
+
+                    <!-- Kepala Rajawali Lucu -->
+                    <path d="M95 125 C95 68, 225 68, 225 125 C225 162, 198 178, 160 178 C122 178, 95 162, 95 125 Z" fill="#78350f" stroke="#451a03" stroke-width="3.5"/>
+                    <!-- Jambul Rajawali Gagah -->
+                    <path d="M138 78 L152 48 L164 72 L182 52 L178 80" fill="#78350f" stroke="#451a03" stroke-width="3" stroke-linejoin="round"/>
+
+                    <!-- Area Mata Krem Cerah -->
+                    <ellipse cx="134" cy="126" rx="26" ry="27" fill="#fef3c7"/>
+                    <ellipse cx="186" cy="126" rx="26" ry="27" fill="#fef3c7"/>
+
+                    <!-- Mata Berkedip -->
+                    <g class="eagle-eyes">
+                        <circle cx="136" cy="126" r="13" fill="#0f172a"/>
+                        <circle cx="140" cy="121" r="5" fill="#ffffff"/>
+                        <circle cx="132" cy="131" r="2.5" fill="#ffffff"/>
+
+                        <circle cx="184" cy="126" r="13" fill="#0f172a"/>
+                        <circle cx="188" cy="121" r="5" fill="#ffffff"/>
+                        <circle cx="180" cy="131" r="2.5" fill="#ffffff"/>
+                    </g>
+
+                    <!-- Pipi Merona -->
+                    <ellipse cx="112" cy="142" rx="9" ry="5" fill="#fb7185" opacity="0.65"/>
+                    <ellipse cx="208" cy="142" rx="9" ry="5" fill="#fb7185" opacity="0.65"/>
+
+                    <!-- Paruh Emas Tersenyum -->
+                    <path d="M140 135 Q160 124 180 135 C182 152, 170 165, 160 166 C150 165, 138 152, 140 135 Z" fill="#facc15" stroke="#d97706" stroke-width="3"/>
+                    <path d="M147 146 Q160 156 173 146" fill="none" stroke="#9a3412" stroke-width="3" stroke-linecap="round"/>
+
+                    <!-- Topi SD Merah Putih di Kepala -->
+                    <path d="M112 80 C130 50, 190 50, 208 80 Z" fill="#e11d48" stroke="#9f1239" stroke-width="3"/>
+                    <path d="M110 78 Q160 68 215 78 L228 86 Q165 82 110 83 Z" fill="#be123c" stroke="#881337" stroke-width="2.5"/>
+                    <circle cx="160" cy="67" r="7" fill="#ffffff"/>
+                </svg>
+            </div>
+
+            <div class="click-hint-badge" id="clickMascotBtn">
+                🔊 Klik Raja si Elang untuk Ngobrol!
+            </div>
+        </div>
+    </div>
+
+    <!-- Bar Statistik Menyenangkan -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;">🎯</div>
+            <div class="stat-info">
+                <h3>84 Siswa</h3>
+                <p>Kuota 3 Rombel Kelas 1</p>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon" style="background: #fef9c3; color: #ca8a04;">🏆</div>
+            <div class="stat-info">
+                <h3>Akreditasi A</h3>
+                <p>Sekolah Unggul Nasional</p>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon" style="background: #dcfce7; color: #15803d;">🎨</div>
+            <div class="stat-info">
+                <h3>12+ Ekskul</h3>
+                <p>Bakat, Sains & Olahraga</p>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon" style="background: #f3e8ff; color: #7e22ce;">💖</div>
+            <div class="stat-info">
+                <h3>100% Gratis</h3>
+                <p>Tanpa Biaya Pendaftaran</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================================
+     3. PARADE KARAKTER SISWA-SISWI ANIMASI (Teman Baru di Sekolah)
+     ====================================================================== -->
+<section class="kids-parade-section">
+    <div class="parade-banner">
+        <h3 class="parade-title">🌟 Kenalan Sama Teman-Teman Seru di SDN 05 Rajawali!</h3>
+        <p class="parade-subtitle">Setiap hari di sekolah adalah petualangan baru yang menyenangkan. Klik karakter teman-teman di bawah ini!</p>
+
+        <div class="kids-characters-grid">
+            <!-- Karakter 1: Membaca Buku Dongeng -->
+            <div class="kid-char-card" onclick="speakMascotCustom('Halo! Aku Dinda! Di Perpustakaan Dongeng SDN 05 Rajawali ada ratusan buku cerita bergambar dan komik sains seru lho!')">
+                <div class="kid-svg-stage">
+                    <svg class="anim-bounce" width="135" height="145" viewBox="0 0 140 150">
+                        <circle cx="70" cy="65" r="52" fill="#fce7f3"/>
+                        <!-- Kerudung Putih Anak SD -->
+                        <path d="M35 65 C35 25, 105 25, 105 65 L112 110 Q70 120 28 110 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2.5"/>
+                        <!-- Wajah Ceria -->
+                        <circle cx="70" cy="60" r="24" fill="#fde68a"/>
+                        <circle cx="61" cy="57" r="3.5" fill="#1e293b"/>
+                        <circle cx="79" cy="57" r="3.5" fill="#1e293b"/>
+                        <path d="M62 67 Q70 74 78 67" fill="none" stroke="#be123c" stroke-width="2.5" stroke-linecap="round"/>
+                        <!-- Buku Terbuka -->
+                        <path d="M30 102 L70 112 L110 102 L110 134 L70 142 L30 134 Z" fill="#38bdf8" stroke="#0284c7" stroke-width="2.5"/>
+                        <line x1="70" y1="112" x2="70" y2="142" stroke="#ffffff" stroke-width="3"/>
+                    </svg>
+                </div>
+                <h4>Dinda si Kutu Buku</h4>
+                <p>Suka baca buku cerita bergambar di Perpustakaan Dongeng 📚</p>
+            </div>
+
+            <!-- Karakter 2: Bermain Bola / Olahraga -->
+            <div class="kid-char-card" onclick="speakMascotCustom('Hai kawan! Aku Bima! Lapangan rumput SDN 05 Rajawali luas banget buat main futsal dan lari pagi bareng!')">
+                <div class="kid-svg-stage">
+                    <svg class="anim-wiggle" width="135" height="145" viewBox="0 0 140 150">
+                        <circle cx="70" cy="65" r="52" fill="#e0f2fe"/>
+                        <!-- Rambut Anak Laki-laki -->
+                        <path d="M40 52 C40 24, 100 24, 100 52 Z" fill="#1e293b"/>
+                        <circle cx="70" cy="62" r="25" fill="#fed7aa"/>
+                        <!-- Mata & Senyum Lebar -->
+                        <circle cx="60" cy="58" r="3.5" fill="#1e293b"/>
+                        <circle cx="80" cy="58" r="3.5" fill="#1e293b"/>
+                        <path d="M58 68 Q70 79 82 68 Z" fill="#e11d48"/>
+                        <!-- Kaos Olahraga Hijau Kuning -->
+                        <path d="M42 88 L98 88 L105 135 L35 135 Z" fill="#22c55e"/>
+                        <!-- Bola Sepak -->
+                        <circle cx="98" cy="122" r="18" fill="#ffffff" stroke="#1e293b" stroke-width="3"/>
+                        <polygon points="98,113 105,118 102,126 94,126 91,118" fill="#1e293b"/>
+                    </svg>
+                </div>
+                <h4>Bima si Juara Futsal</h4>
+                <p>Semangat olahraga di lapangan hijau yang luas & aman ⚽</p>
+            </div>
+
+            <!-- Karakter 3: Melukis & Seni -->
+            <div class="kid-char-card" onclick="speakMascotCustom('Halo! Aku Mei-Mei! Di kelas seni kita bebas menggambar, mewarnai, dan membuat prakarya warna-warni!')">
+                <div class="kid-svg-stage">
+                    <svg class="anim-float" width="135" height="145" viewBox="0 0 140 150">
+                        <circle cx="70" cy="65" r="52" fill="#fef9c3"/>
+                        <!-- Kuncir Dua Lucu -->
+                        <circle cx="36" cy="50" r="12" fill="#1e293b"/>
+                        <circle cx="104" cy="50" r="12" fill="#1e293b"/>
+                        <circle cx="70" cy="62" r="25" fill="#fde68a"/>
+                        <path d="M44 52 Q70 30 96 52" fill="#1e293b"/>
+                        <!-- Baret Lukis Ungu -->
+                        <ellipse cx="70" cy="34" rx="28" ry="10" fill="#a855f7"/>
+                        <circle cx="60" cy="59" r="3.5" fill="#1e293b"/>
+                        <circle cx="80" cy="59" r="3.5" fill="#1e293b"/>
+                        <path d="M62 69 Q70 76 78 69" fill="none" stroke="#e11d48" stroke-width="2.5" stroke-linecap="round"/>
+                        <!-- Palet Lukis Warna-warni -->
+                        <ellipse cx="68" cy="116" rx="34" ry="20" fill="#fde047" stroke="#ca8a04" stroke-width="2.5"/>
+                        <circle cx="50" cy="114" r="5" fill="#ef4444"/>
+                        <circle cx="64" cy="108" r="5" fill="#3b82f6"/>
+                        <circle cx="78" cy="112" r="5" fill="#22c55e"/>
+                    </svg>
+                </div>
+                <h4>Mei-Mei si Pelukis Cilik</h4>
+                <p>Bebas berkreasi melukis, menari, dan bermain musik 🎨</p>
+            </div>
+
+            <!-- Karakter 4: Eksperimen Sains & Robotik -->
+            <div class="kid-char-card" onclick="speakMascotCustom('Salam kenal! Aku Raka! Kita bisa merakit robot sederhana dan melakukan eksperimen sains seru setiap minggu!')">
+                <div class="kid-svg-stage">
+                    <svg class="anim-bounce" width="135" height="145" viewBox="0 0 140 150">
+                        <circle cx="70" cy="65" r="52" fill="#f3e8ff"/>
+                        <circle cx="70" cy="62" r="25" fill="#fed7aa"/>
+                        <path d="M43 48 Q70 22 97 48" fill="#451a03"/>
+                        <!-- Kacamata Ilmuwan Cilik -->
+                        <circle cx="59" cy="59" r="9" fill="none" stroke="#0284c7" stroke-width="3"/>
+                        <circle cx="81" cy="59" r="9" fill="none" stroke="#0284c7" stroke-width="3"/>
+                        <line x1="68" y1="59" x2="72" y2="59" stroke="#0284c7" stroke-width="3"/>
+                        <circle cx="59" cy="59" r="3" fill="#1e293b"/>
+                        <circle cx="81" cy="59" r="3" fill="#1e293b"/>
+                        <path d="M62 72 Q70 78 78 72" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>
+                        <!-- Tabung Reaksi Sains Berkilau -->
+                        <path d="M55 96 L85 96 L76 108 L92 135 L48 135 L64 108 Z" fill="#38bdf8" stroke="#0369a1" stroke-width="2.5"/>
+                        <circle cx="70" cy="86" r="4" fill="#4ade80" style="animation: bubbleFade 2s infinite;"/>
+                        <circle cx="78" cy="78" r="3" fill="#facc15" style="animation: bubbleFade 2.5s infinite;"/>
+                    </svg>
+                </div>
+                <h4>Raka Ilmuwan Muda</h4>
+                <p>Gemar bereksperimen sains ceria & merakit robot dasar 🤖</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================================
+     4. KENAPA HARUS SEKOLAH DI SDN 05 RAJAWALI? (Fasilitas & Ekskul)
+     ====================================================================== -->
+<section class="section-padding" id="keunggulan">
+    <div class="section-header">
+        <span class="section-tag">🌈 SEKOLAH IMPIAN ANAK</span>
+        <h2>Kenapa Harus Sekolah di SDN 05 Rajawali?</h2>
+        <p>Kami memadukan fasilitas modern yang ramah anak dengan kegiatan ekstrakurikuler seru agar setiap siswa bersemangat berangkat ke sekolah!</p>
+    </div>
+
+    <!-- Tombol Tab Fasilitas vs Ekstrakurikuler -->
+    <div class="tab-switcher">
+        <button class="tab-btn active" onclick="switchFeatureTab('fasilitas', this)">🏫 Fasilitas Ceria</button>
+        <button class="tab-btn" onclick="switchFeatureTab('ekskul', this)">🎪 Ekstrakurikuler Seru</button>
+    </div>
+
+    <!-- Grid 1: Fasilitas Sekolah -->
+    <div class="bouncy-grid" id="tab-fasilitas">
+        <div class="bouncy-card card-blue">
+            <div class="card-icon-wrap" style="background: #e0f2fe;">
+                <svg width="60" height="60" viewBox="0 0 80 80">
+                    <rect x="14" y="20" width="52" height="42" rx="6" fill="#38bdf8"/>
+                    <path d="M40 20 L40 62" stroke="#ffffff" stroke-width="4"/>
+                    <circle cx="27" cy="36" r="5" fill="#fde047"/>
+                    <path d="M50 32 L60 32 M50 42 L60 42" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h3>Perpustakaan Dongeng</h3>
+            <p>Ruang baca ber-AC dengan karpet empuk, panggung boneka tangan, dan ribuan buku cerita bergambar.</p>
+            <span class="badge-ekskul">✨ Favorit Siswa</span>
+        </div>
+
+        <div class="bouncy-card card-yellow">
+            <div class="card-icon-wrap" style="background: #fef9c3;">
+                <svg width="60" height="60" viewBox="0 0 80 80">
+                    <rect x="14" y="16" width="52" height="36" rx="6" fill="#0284c7"/>
+                    <rect x="20" y="22" width="40" height="24" rx="3" fill="#bae6fd"/>
+                    <rect x="28" y="54" width="24" height="8" fill="#64748b"/>
+                    <rect x="18" y="62" width="44" height="5" rx="2" fill="#475569"/>
+                </svg>
+            </div>
+            <h3>Lab Komputer Anak</h3>
+            <p>Pengenalan teknologi sejak dini dengan game edukasi interaktif, mewarnai digital, dan internet aman.</p>
+            <span class="badge-ekskul">💻 Pembelajaran Digital</span>
+        </div>
+
+        <div class="bouncy-card card-green">
+            <div class="card-icon-wrap" style="background: #dcfce7;">
+                <svg width="60" height="60" viewBox="0 0 80 80">
+                    <circle cx="40" cy="32" r="20" fill="#22c55e"/>
+                    <rect x="35" y="48" width="10" height="18" fill="#78350f"/>
+                    <path d="M12 66 Q40 58 68 66" stroke="#15803d" stroke-width="6" stroke-linecap="round" fill="none"/>
+                </svg>
+            </div>
+            <h3>Taman Bermain Hijau</h3>
+            <p>Dilengkapi perosotan aman, ayunan, kebun sayur mini siswa, dan lapangan olahraga beralas rumput sintetis.</p>
+            <span class="badge-ekskul">🌳 Udara Segar</span>
+        </div>
+
+        <div class="bouncy-card card-purple">
+            <div class="card-icon-wrap" style="background: #f3e8ff;">
+                <svg width="60" height="60" viewBox="0 0 80 80">
+                    <path d="M18 35 L62 35 L56 64 L24 64 Z" fill="#fb923c"/>
+                    <path d="M14 26 L66 26 L62 35 L18 35 Z" fill="#f43f5e"/>
+                    <circle cx="40" cy="49" r="9" fill="#fef08a"/>
+                </svg>
+            </div>
+            <h3>Kantin Sehat & Higienis</h3>
+            <p>Menyediakan jajanan bergizi bebas pengawet, buah segar setiap hari, dan dipantau oleh tim UKS sekolah.</p>
+            <span class="badge-ekskul">🍎 Bebas 5P</span>
+        </div>
+    </div>
+
+    <!-- Grid 2: Ekstrakurikuler (Hidden secara default, muncul saat tab diklik) -->
+    <div class="bouncy-grid" id="tab-ekskul" style="display: none;">
+        <div class="bouncy-card card-yellow">
+            <div class="card-icon-wrap" style="background: #fef9c3; font-size: 2.6rem;">🏕️</div>
+            <h3>Pramuka Siaga Cilik</h3>
+            <p>Melatih kemandirian, keberanian, kerjasama tim, dan cinta alam lewat permainan luar ruang yang seru.</p>
+            <span class="badge-ekskul">Setiap Jumat Sore</span>
+        </div>
+
+        <div class="bouncy-card card-blue">
+            <div class="card-icon-wrap" style="background: #e0f2fe; font-size: 2.6rem;">🤖</div>
+            <h3>Klub Robotik & Sains</h3>
+            <p>Merakit balok mekanik, mengenal logika pemrograman visual anak, dan eksperimen sains menyenangkan.</p>
+            <span class="badge-ekskul">Setiap Rabu</span>
+        </div>
+
+        <div class="bouncy-card card-purple">
+            <div class="card-icon-wrap" style="background: #f3e8ff; font-size: 2.6rem;">🎭</div>
+            <h3>Tari Tradisional & Musik</h3>
+            <p>Mengenal budaya Nusantara lewat seni tari daerah, angklung, pianika, serta paduan suara anak.</p>
+            <span class="badge-ekskul">Setiap Kamis</span>
+        </div>
+
+        <div class="bouncy-card card-green">
+            <div class="card-icon-wrap" style="background: #dcfce7; font-size: 2.6rem;">🏹</div>
+            <h3>Futsal & Panahan Anak</h3>
+            <p>Melatih fokus, ketangkasan fisik, dan sportivitas bersama pelatih olahraga berpengalaman.</p>
+            <span class="badge-ekskul">Setiap Sabtu Pagi</span>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================================
+     5. PETA PETUALANGAN ALUR PENDAFTARAN & CHECKLIST SYARAT INTERAKTIF
+     ====================================================================== -->
+<section class="adventure-section" id="alur">
+    <div class="adventure-container">
+        <div class="section-header">
+            <span class="section-tag">🗺️ PETA PETUALANGAN</span>
+            <h2>4 Langkah Mudah Jadi Siswa SDN 05 Rajawali</h2>
+            <p>Ikuti rute petualangan di bawah ini bersama Ayah dan Bunda untuk bergabung di sekolah baru!</p>
+        </div>
+
+        <!-- 4 Pulau Petualangan -->
+        <div class="map-steps-grid">
+            <div class="step-island">
+                <span class="step-number">Pos 1</span>
+                <div class="step-emoji">📝</div>
+                <h3>Isi Formulir Online</h3>
+                <p>Lengkapi biodata calon siswa, pilih avatar lucu dan cita-cita impian langsung di halaman ini.</p>
+            </div>
+
+            <div class="step-island">
+                <span class="step-number">Pos 2</span>
+                <div class="step-emoji">📂</div>
+                <h3>Verifikasi Berkas</h3>
+                <p>Panitia PPDB memeriksa kelengkapan Akta Kelahiran, Kartu Keluarga, dan usia calon siswa.</p>
+            </div>
+
+            <div class="step-island">
+                <span class="step-number">Pos 3</span>
+                <div class="step-emoji">🎈</div>
+                <h3>Kenalan Sekolah Ceria</h3>
+                <p>Bukan tes baca-tulis! Anak diajak bermain, mengenal ruang kelas, dan menyapa Ibu/Bapak Guru.</p>
+            </div>
+
+            <div class="step-island">
+                <span class="step-number">Pos 4</span>
+                <div class="step-emoji">🎒</div>
+                <h3>Pengumuman & Seragam</h3>
+                <p>Selamat datang Rajawali Cilik! Daftar ulang gratis dan siap memakai seragam merah putih baru.</p>
+            </div>
+        </div>
+
+        <!-- Checklist Persyaratan & Kuota -->
+        <div class="prep-grid">
+            <!-- Kiri: Checklist Interaktif -->
+            <div class="checklist-card">
+                <h3>✅ Cek Kesiapan Berkas Ayah & Bunda</h3>
+                <p style="font-size: 0.92rem; color: var(--text-muted); font-weight: 600;">
+                    Centang dokumen di bawah ini untuk melihat kesiapan pendaftaran buah hati Anda:
+                </p>
+
+                <div class="progress-wrapper">
+                    <div class="progress-bar-fill" id="checklistProgress" style="width: 40%;"></div>
+                </div>
+                <span class="progress-text" id="checklistStatusText">Kesiapan Berkas: 40% (2 dari 5 syarat siap)</span>
+
+                <label class="check-item checked">
+                    <input type="checkbox" class="req-checkbox" checked onchange="updateChecklistProgress()">
+                    <span>🎂 Usia minimal 6 tahun pada 1 Juli 2026 (Prioritas 7 tahun)</span>
+                </label>
+                <label class="check-item checked">
+                    <input type="checkbox" class="req-checkbox" checked onchange="updateChecklistProgress()">
+                    <span>📜 Akta Kelahiran Asli / Fotokopi Legalisir</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" class="req-checkbox" onchange="updateChecklistProgress()">
+                    <span>👨‍👩‍👧‍👦 Kartu Keluarga (KK) yang masih berlaku</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" class="req-checkbox" onchange="updateChecklistProgress()">
+                    <span>🪪 KTP Orang Tua / Wali Siswa</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" class="req-checkbox" onchange="updateChecklistProgress()">
+                    <span>📸 Pas Foto Ceria Calon Siswa ukuran 3x4 (2 Lembar)</span>
+                </label>
+            </div>
+
+            <!-- Kanan: Kuota & Jadwal -->
+            <div class="quota-card">
+                <h3>📅 Kuota & Jadwal PPDB 2026</h3>
+                <p style="font-size: 0.92rem; color: var(--text-muted); font-weight: 600; margin-bottom: 14px;">
+                    Daya tampung total: <strong>84 Siswa Baru (3 Kelas)</strong>
+                </p>
+                <ul class="quota-list">
+                    <li>
+                        <span>🏠 Jalur Zonasi (Jarak Rumah)</span>
+                        <span class="quota-pill">70% (59 Kursi)</span>
+                    </li>
+                    <li>
+                        <span>🤝 Jalur Afirmasi (KIP/DTKS)</span>
+                        <span class="quota-pill">15% (13 Kursi)</span>
+                    </li>
+                    <li>
+                        <span>🚚 Perpindahan Tugas Orang Tua</span>
+                        <span class="quota-pill">5% (4 Kursi)</span>
+                    </li>
+                    <li>
+                        <span>🌟 Gelombang Reguler Umum</span>
+                        <span class="quota-pill">10% (8 Kursi)</span>
+                    </li>
+                    <li>
+                        <span>⏰ Jam Layanan Bantuan Posko</span>
+                        <span class="quota-pill" style="background:#dcfce7; color:#15803d;">08.00 - 14.00 WIB</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================================
+     6. FORMULIR PENDAFTARAN ONLINE INTERAKTIF
+     ====================================================================== -->
+<section class="section-padding" id="form-daftar">
+    <div class="section-header">
+        <span class="section-tag">🚀 FORMULIR ONLINE</span>
+        <h2>Formulir Pendaftaran Rajawali Cilik</h2>
+        <p>Isi data di bawah ini bersama buah hati. Setelah klik daftar, adik-adik akan langsung mendapatkan <strong>Kartu Siswa Digital SDN 05 Rajawali!</strong></p>
+    </div>
+
+    <div class="form-container-card">
+        <form id="ppdbForm" onsubmit="handleFormSubmit(event)">
+            <!-- Bagian 1: Data Calon Siswa -->
+            <div class="form-step-title">
+                <span>👦👧 Bagian 1: Kenalan Sama Calon Siswa Yuk!</span>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="studentName">Nama Lengkap Anak *</label>
+                    <input type="text" id="studentName" class="form-input" placeholder="Contoh: Arjuna Pratama Putra" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentNick">Nama Panggilan Kesayangan *</label>
+                    <input type="text" id="studentNick" class="form-input" placeholder="Contoh: Arjuna" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentNIK">NIK Anak (16 Digit di KK) *</label>
+                    <input type="text" id="studentNIK" class="form-input" maxlength="16" pattern="[0-9]{16}" placeholder="Contoh: 3174051203190001" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthDate">Tanggal Lahir Anak *</label>
+                    <input type="date" id="birthDate" class="form-input" value="2019-06-15" onchange="calculateChildAge()" required>
+                    <div id="ageOutput" class="age-badge-output">Usia: 7 Tahun 4 Bulan (Memenuhi Syarat Kelas 1 SD ✅)</div>
+                </div>
+
+                <!-- Pilihan Avatar Karakter Anak -->
+                <div class="form-group full-width">
+                    <label>Pilih Karakter Avatar Kamu *</label>
+                    <input type="hidden" id="selectedGender" value="Laki-laki">
+                    <div class="avatar-selector">
+                        <div class="selectable-tile selected" onclick="selectGenderTile('Laki-laki', this)">
+                            <div style="font-size: 2.6rem;">👦🏻🎒</div>
+                            <span>Siswa Rajawali (Laki-laki)</span>
+                        </div>
+                        <div class="selectable-tile" onclick="selectGenderTile('Perempuan', this)">
+                            <div style="font-size: 2.6rem;">👧🏻🎀</div>
+                            <span>Siswi Rajawali (Perempuan)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pilihan Cita-Cita Anak -->
+                <div class="form-group full-width">
+                    <label>Kalau Besar Nanti Ingin Jadi Apa? (Pilih Cita-Cita) *</label>
+                    <input type="hidden" id="selectedDream" value="Astronot 🚀">
+                    <div class="dream-selector">
+                        <div class="selectable-tile selected" onclick="selectDreamTile('Astronot 🚀', this)">
+                            <div style="font-size: 2rem;">🚀</div>
+                            <span>Astronot</span>
+                        </div>
+                        <div class="selectable-tile" onclick="selectDreamTile('Dokter Cilik 🩺', this)">
+                            <div style="font-size: 2rem;">🩺</div>
+                            <span>Dokter</span>
+                        </div>
+                        <div class="selectable-tile" onclick="selectDreamTile('Ilmuwan & Robotik 🤖', this)">
+                            <div style="font-size: 2rem;">🤖</div>
+                            <span>Ilmuwan</span>
+                        </div>
+                        <div class="selectable-tile" onclick="selectDreamTile('Seniman & Pelukis 🎨', this)">
+                            <div style="font-size: 2rem;">🎨</div>
+                            <span>Pelukis</span>
+                        </div>
+                        <div class="selectable-tile" onclick="selectDreamTile('Atlet Juara 🏅', this)">
+                            <div style="font-size: 2rem;">🏅</div>
+                            <span>Atlet Juara</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bagian 2: Jalur & Data Orang Tua -->
+            <div class="form-step-title">
+                <span>👨‍👩‍👧 Bagian 2: Data Orang Tua / Wali & Jalur PPDB</span>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="regPath">Pilih Jalur Pendaftaran *</label>
+                    <select id="regPath" class="form-input" required>
+                        <option value="Zonasi">🏠 Jalur Zonasi (Prioritas Jarak Rumah)</option>
+                        <option value="Afirmasi">🤝 Jalur Afirmasi (KIP / PKH / DTKS)</option>
+                        <option value="Perpindahan Tugas">🚚 Jalur Perpindahan Tugas Orang Tua</option>
+                        <option value="Reguler">🌟 Jalur Reguler Umum</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="schoolDistance">Perkiraan Jarak Rumah ke Sekolah (Meter) *</label>
+                    <input type="number" id="schoolDistance" class="form-input" placeholder="Contoh: 450" min="10" max="15000" value="350" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="parentName">Nama Lengkap Ayah / Bunda / Wali *</label>
+                    <input type="text" id="parentName" class="form-input" placeholder="Contoh: Budi Santoso" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="parentWA">Nomor WhatsApp Aktif *</label>
+                    <input type="tel" id="parentWA" class="form-input" placeholder="Contoh: 081234567890" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="homeAddress">Alamat Lengkap Rumah (Sesuai KK) *</label>
+                    <input type="text" id="homeAddress" class="form-input" placeholder="Contoh: Jl. Rajawali Sakti No. 12 RT 04/RW 02, Kel. Cempaka" required>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <button type="submit" class="btn-3d btn-3d-primary" style="font-size: 1.25rem; padding: 18px 42px;">
+                    🎉 Kirim Pendaftaran & Buat Kartu Siswa!
+                </button>
+            </div>
+        </form>
+
+        <!-- Kartu Bukti Pendaftaran Digital (Muncul Setelah Submit) -->
+        <div class="id-card-result-wrap" id="idCardResult">
+            <h3 style="font-size: 1.8rem; color: var(--grass-dark); margin-bottom: 6px;">
+                🎊 Horeee! Selamat Bergabung Calon Rajawali Cilik!
+            </h3>
+            <p style="font-weight: 700; color: var(--text-muted);">
+                Data kamu sudah tercatat di sistem PPDB SDN 05 Rajawali. Simpan atau cetak kartu bukti pendaftaran di bawah ini ya!
+            </p>
+
+            <!-- Area Kartu ID Siswa -->
+            <div class="student-id-card" id="printableCardArea">
+                <div class="id-card-header">
+                    <div>
+                        <strong style="font-size: 1.15rem; display: block;">KARTU BUKTI PENDAFTARAN PPDB</strong>
+                        <small>SDN 05 RAJAWALI • Tahun Ajaran 2026/2027</small>
+                    </div>
+                    <span style="font-size: 2rem;">🦅</span>
+                </div>
+                <div class="id-card-body">
+                    <div class="id-avatar-box">
+                        <div id="cardAvatarEmoji" style="font-size: 3.6rem;">👦🏻</div>
+                        <small id="cardNickName" style="font-weight: 800; color: var(--sky-deep); display: block; margin-top: 4px;">Arjuna</small>
+                    </div>
+                    <div class="id-details">
+                        <div class="reg-number-pill" id="cardRegNo">PPDB-RJW05-2026-089</div>
+                        <p>Nama Lengkap: <strong id="cardFullName">-</strong></p>
+                        <p>Usia Anak: <strong id="cardAge">-</strong></p>
+                        <p>Cita-Cita: <strong id="cardDream">-</strong></p>
+                        <p>Jalur & Jarak: <strong id="cardPathDist">-</strong></p>
+                        <p>Nama Orang Tua: <strong id="cardParent">-</strong></p>
+                        <p>Status Berkas: <strong style="color: #16a34a;">✅ Terdaftar (Menunggu Verifikasi Posko)</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 18px;">
+                <button type="button" class="btn-3d btn-3d-secondary" onclick="window.print()">
+                    🖨️ Cetak Kartu Pendaftaran
+                </button>
+                <a href="#pengumuman" class="btn-3d btn-3d-primary">
+                    📊 Lihat Nama Kamu di Tabel Pendaftar
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================================
+     7. TABEL LIVE PENDAFTAR & CEK STATUS SELEKSI / PENGUMUMAN
+     ====================================================================== -->
+<section class="section-padding" id="pengumuman">
+    <div class="section-header">
+        <span class="section-tag">🔍 TRANSPARAN & REAL-TIME</span>
+        <h2>Daftar Calon Siswa & Cek Status Seleksi</h2>
+        <p>Ketik nomor pendaftaran atau nama calon siswa untuk melihat status verifikasi berkas secara langsung.</p>
+    </div>
+
+    <div class="table-card">
+        <div class="search-filter-bar">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="form-input" style="width: 100%;" placeholder="🔎 Cari Nama Anak atau Nomor Pendaftaran (Misal: RJW05)..." oninput="renderApplicantsTable()">
+            </div>
+            <div>
+                <select id="filterPath" class="form-input" onchange="renderApplicantsTable()">
+                    <option value="SEMUA">Semua Jalur PPDB</option>
+                    <option value="Zonasi">Jalur Zonasi</option>
+                    <option value="Afirmasi">Jalur Afirmasi</option>
+                    <option value="Perpindahan Tugas">Perpindahan Tugas</option>
+                    <option value="Reguler">Jalur Reguler</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="ppdb-table">
+                <thead>
+                <tr>
+                    <th>No. Pendaftaran</th>
+                    <th>Nama Calon Siswa</th>
+                    <th>Usia</th>
+                    <th>Cita-Cita</th>
+                    <th>Jalur & Jarak</th>
+                    <th>Status Seleksi</th>
+                </tr>
+                </thead>
+                <tbody id="applicantsTableBody">
+                <!-- Diisi Dinamis oleh JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================================
+     8. FOOTER BERTEMA TAMAN SEKOLAH
+     ====================================================================== -->
+<footer class="school-garden-footer">
+    <!-- Rumput Bergoyang SVG di atas Footer -->
+    <div class="grass-top-border">
+        <svg viewBox="0 0 1440 60" preserveAspectRatio="none" width="100%" height="60">
+            <path d="M0,60 L0,25 Q30,5 60,28 T120,22 T180,30 T240,18 T300,28 T360,20 T420,30 T480,15 T540,28 T600,22 T660,30 T720,18 T780,26 T840,20 T900,30 T960,16 T1020,28 T1080,22 T1140,30 T1200,18 T1260,28 T1320,20 T1380,28 L1440,20 L1440,60 Z" fill="#15803d"/>
+        </svg>
+    </div>
+
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h3>🦅 SDN 05 RAJAWALI</h3>
+            <p>Sekolah Dasar Negeri Unggulan Ramah Anak yang berkomitmen menumbuhkan generasi cerdas, kreatif, berakhlak mulia, dan siap terbang tinggi meraih cita-cita.</p>
+            <p>📍 <strong>Alamat:</strong> Jl. Taman Rajawali Raya No. 05, Kec. Rajawali Indah, Kota Jakarta</p>
+        </div>
+
+        <div class="footer-col">
+            <h3>⏰ Jam Layanan Posko PPDB</h3>
+            <ul>
+                <li>🗓️ Senin - Jumat: 08.00 - 14.00 WIB</li>
+                <li>🗓️ Sabtu: 08.00 - 12.00 WIB</li>
+                <li>📞 Telepon Sekolah: (021) 555-0505</li>
+                <li>💬 WhatsApp Panitia: 0812-0505-2026</li>
+                <li>✉️ Email: ppdb@sdn05rajawali.sch.id</li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>🎈 Tautan Cepat</h3>
+            <ul>
+                <li><a href="#beranda">▸ Beranda & Maskot Raja</a></li>
+                <li><a href="#keunggulan">▸ Fasilitas & Ekstrakurikuler</a></li>
+                <li><a href="#alur">▸ Peta Alur & Checklist Berkas</a></li>
+                <li><a href="#form-daftar">▸ Formulir Pendaftaran Online</a></li>
+                <li><a href="#pengumuman">▸ Tabel Live Status Pendaftar</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Panitia PPDB SDN 05 RAJAWALI. Dibuat dengan penuh keceriaan untuk masa depan anak Indonesia 🌟</p>
+    </div>
+</footer>
+
+<!-- ======================================================================
+     JAVASCRIPT INTERAKTIF (Maskot, Countdown, Form, Confetti, Live Table)
+     ====================================================================== -->
+<script>
+    /* ------------------------------------------------------------------
+       1. MENU MOBILE TOGGLE
+       ------------------------------------------------------------------ */
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+
+    mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+    });
+
+    /* ------------------------------------------------------------------
+       2. INTERAKSI MASKOT "RAJA SI ELANG RAJAWALI CILIK"
+       ------------------------------------------------------------------ */
+    const mascotDialogues = [
+        "Halo teman-teman! Aku <strong>Raja si Elang Cilik</strong>. Yuk sekolah dan bermain seru di SDN 05 Rajawali!",
+        "Di SDN 05 Rajawali tidak ada tes calistung yang menegangkan lho! Kita belajar sambil bermain gembira 🎨",
+        "Tahukah kamu? Di sekolah kita ada Perpustakaan Dongeng, Klub Robotik, dan Lapangan Futsal Hijau! ⚽🤖",
+        "Ibu dan Bapak Guru di SDN 05 Rajawali ramah dan sayang sekali sama kita semua 💖",
+        "Ayo ajak Ayah dan Bunda isi formulir di bawah, nanti kamu langsung dapat Kartu Siswa Rajawali Cilik! 🪪✨"
+    ];
+    let currentDialogueIndex = 0;
+
+    const mascotSpeech = document.getElementById('mascotSpeech');
+    const mascotCharacter = document.getElementById('mascotCharacter');
+    const clickMascotBtn = document.getElementById('clickMascotBtn');
+
+    function cycleMascotSpeech() {
+        currentDialogueIndex = (currentDialogueIndex + 1) % mascotDialogues.length;
+        mascotSpeech.innerHTML = `"${mascotDialogues[currentDialogueIndex]}"`;
+        mascotSpeech.classList.remove('pop-anim');
+        void mascotSpeech.offsetWidth; // trigger reflow
+        mascotSpeech.classList.add('pop-anim');
+    }
+
+    function speakMascotCustom(message) {
+        mascotSpeech.innerHTML = `"${message}"`;
+        mascotSpeech.classList.remove('pop-anim');
+        void mascotSpeech.offsetWidth;
+        mascotSpeech.classList.add('pop-anim');
+        document.getElementById('beranda').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    mascotCharacter.addEventListener('click', cycleMascotSpeech);
+    clickMascotBtn.addEventListener('click', cycleMascotSpeech);
+
+    /* ------------------------------------------------------------------
+       3. HITUNG MUNDUR (COUNTDOWN) PENUTUPAN GELOMBANG PPDB
+       ------------------------------------------------------------------ */
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + 14);
+    targetDate.setHours(targetDate.getHours() + 8);
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = targetDate.getTime() - now;
+
+        if (diff <= 0) return;
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    /* ------------------------------------------------------------------
+       4. TAB SWITCHER FASILITAS & EKSTRAKURIKULER
+       ------------------------------------------------------------------ */
+    function switchFeatureTab(tabName, btnEl) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        btnEl.classList.add('active');
+
+        const tabFasilitas = document.getElementById('tab-fasilitas');
+        const tabEkskul = document.getElementById('tab-ekskul');
+
+        if (tabName === 'fasilitas') {
+            tabFasilitas.style.display = 'grid';
+            tabEkskul.style.display = 'none';
+        } else {
+            tabFasilitas.style.display = 'none';
+            tabEkskul.style.display = 'grid';
+        }
+    }
+
+    /* ------------------------------------------------------------------
+       5. CHECKLIST SYARAT INTERAKTIF DENGAN PROGRESS BAR
+       ------------------------------------------------------------------ */
+    function updateChecklistProgress() {
+        const checkboxes = document.querySelectorAll('.req-checkbox');
+        let checkedCount = 0;
+
+        checkboxes.forEach(cb => {
+            const parentLabel = cb.closest('.check-item');
+            if (cb.checked) {
+                checkedCount++;
+                parentLabel.classList.add('checked');
+            } else {
+                parentLabel.classList.remove('checked');
+            }
+        });
+
+        const percent = Math.round((checkedCount / checkboxes.length) * 100);
+        document.getElementById('checklistProgress').style.width = percent + '%';
+
+        const statusText = document.getElementById('checklistStatusText');
+        if (percent === 100) {
+            statusText.textContent = `🎉 Kesiapan Berkas: 100% Lengkap! Siap Mendaftar Sekarang!`;
+        } else {
+            statusText.textContent = `Kesiapan Berkas: ${percent}% (${checkedCount} dari ${checkboxes.length} syarat siap)`;
+        }
+    }
+
+    /* ------------------------------------------------------------------
+       6. PENGHITUNG USIA OTOMATIS & PEMILIH AVATAR/CITA-CITA
+       ------------------------------------------------------------------ */
+    let currentCalculatedAgeStr = "7 Tahun 0 Bulan";
+
+    function calculateChildAge() {
+        const birthInput = document.getElementById('birthDate').value;
+        const ageOutput = document.getElementById('ageOutput');
+        if (!birthInput) return;
+
+        const birthDate = new Date(birthInput);
+        const refDate = new Date('2026-07-01'); // Patokan tahun ajaran baru 1 Juli 2026
+
+        let years = refDate.getFullYear() - birthDate.getFullYear();
+        let months = refDate.getMonth() - birthDate.getMonth();
+
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        currentCalculatedAgeStr = `${years} Thn ${months} Bln`;
+
+        if (years >= 7) {
+            ageOutput.style.background = '#dcfce7';
+            ageOutput.style.color = '#15803d';
+            ageOutput.textContent = `Usia per Juli 2026: ${years} Tahun ${months} Bulan (Prioritas Utama Kelas 1 SD 🌟)`;
+        } else if (years === 6) {
+            ageOutput.style.background = '#e0f2fe';
+            ageOutput.style.color = '#0369a1';
+            ageOutput.textContent = `Usia per Juli 2026: ${years} Tahun ${months} Bulan (Memenuhi Syarat Kelas 1 SD ✅)`;
+        } else {
+            ageOutput.style.background = '#fef9c3';
+            ageOutput.style.color = '#a16207';
+            ageOutput.textContent = `Usia per Juli 2026: ${years} Tahun ${months} Bulan (Butuh Rekomendasi Psikolog Anak 💡)`;
+        }
+    }
+    calculateChildAge();
+
+    function selectGenderTile(genderVal, el) {
+        document.getElementById('selectedGender').value = genderVal;
+        const parent = el.parentElement;
+        parent.querySelectorAll('.selectable-tile').forEach(t => t.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function selectDreamTile(dreamVal, el) {
+        document.getElementById('selectedDream').value = dreamVal;
+        const parent = el.parentElement;
+        parent.querySelectorAll('.selectable-tile').forEach(t => t.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    /* ------------------------------------------------------------------
+       7. DATA PENDAFTAR & PENYIMPANAN LOCALSTORAGE + SUBMIT FORM
+       ------------------------------------------------------------------ */
+    const initialApplicants = [
+        {
+            regNo: "PPDB-RJW05-2026-001",
+            name: "Kenzo Alfarizqi",
+            gender: "Laki-laki",
+            age: "7 Thn 2 Bln",
+            dream: "Astronot 🚀",
+            path: "Zonasi",
+            distance: "180m",
+            status: "Diterima"
+        },
+        {
+            regNo: "PPDB-RJW05-2026-002",
+            name: "Aisyah Humaira Putri",
+            gender: "Perempuan",
+            age: "7 Thn 0 Bln",
+            dream: "Dokter Cilik 🩺",
+            path: "Zonasi",
+            distance: "240m",
+            status: "Diterima"
+        },
+        {
+            regNo: "PPDB-RJW05-2026-003",
+            name: "Bagas Satria Wijaya",
+            gender: "Laki-laki",
+            age: "6 Thn 10 Bln",
+            dream: "Ilmuwan & Robotik 🤖",
+            path: "Afirmasi",
+            distance: "620m",
+            status: "Terverifikasi"
+        },
+        {
+            regNo: "PPDB-RJW05-2026-004",
+            name: "Clara Nathania",
+            gender: "Perempuan",
+            age: "6 Thn 8 Bln",
+            dream: "Seniman & Pelukis 🎨",
+            path: "Perpindahan Tugas",
+            distance: "1200m",
+            status: "Terverifikasi"
+        },
+        {
+            regNo: "PPDB-RJW05-2026-005",
+            name: "Muhammad Rafa Azka",
+            gender: "Laki-laki",
+            age: "7 Thn 1 Bln",
+            dream: "Atlet Juara 🏅",
+            path: "Zonasi",
+            distance: "310m",
+            status: "Diterima"
+        }
+    ];
+
+    let applicantsList = [];
+
+    function loadApplicants() {
+        try {
+            const saved = localStorage.getItem('sdn05_rajawali_ppdb');
+            if (saved) {
+                applicantsList = JSON.parse(saved);
+            } else {
+                applicantsList = [...initialApplicants];
+            }
+        } catch (e) {
+            applicantsList = [...initialApplicants];
+        }
+        renderApplicantsTable();
+    }
+
+    function saveApplicants() {
+        try {
+            localStorage.setItem('sdn05_rajawali_ppdb', JSON.stringify(applicantsList));
+        } catch (e) {
+            // Abaikan jika mode private/iframe membatasi storage
+        }
+    }
+
+    function renderApplicantsTable() {
+        const tbody = document.getElementById('applicantsTableBody');
+        const query = document.getElementById('searchInput').value.toLowerCase().trim();
+        const pathFilter = document.getElementById('filterPath').value;
+
+        const filtered = applicantsList.filter(item => {
+            const matchSearch = item.name.toLowerCase().includes(query) || item.regNo.toLowerCase().includes(query);
+            const matchPath = pathFilter === 'SEMUA' || item.path === pathFilter;
+            return matchSearch && matchPath;
+        });
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align:center; padding: 28px; color: var(--text-muted);">
+                            Belum ada data pendaftar yang cocok dengan pencarian tersebut 🔍
+                        </td>
+                    </tr>
+                `;
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(item => {
+            let badgeClass = 'status-menunggu';
+            let badgeIcon = '⏳';
+            if (item.status === 'Diterima') {
+                badgeClass = 'status-diterima';
+                badgeIcon = '🎉';
+            } else if (item.status === 'Terverifikasi') {
+                badgeClass = 'status-verifikasi';
+                badgeIcon = '✅';
+            }
+
+            const avatarIcon = item.gender === 'Perempuan' ? '👧🏻' : '👦🏻';
+
+            return `
+                    <tr>
+                        <td style="font-family: var(--font-heading); color: var(--sky-deep);">${item.regNo}</td>
+                        <td>${avatarIcon} ${item.name}</td>
+                        <td>${item.age}</td>
+                        <td>${item.dream}</td>
+                        <td>${item.path} (${item.distance})</td>
+                        <td>
+                            <span class="status-badge ${badgeClass}">
+                                ${badgeIcon} ${item.status}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+        }).join('');
+    }
+
+    function handleFormSubmit(e) {
+        e.preventDefault();
+
+        const fullName = document.getElementById('studentName').value.trim();
+        const nickName = document.getElementById('studentNick').value.trim();
+        const gender = document.getElementById('selectedGender').value;
+        const dream = document.getElementById('selectedDream').value;
+        const regPath = document.getElementById('regPath').value;
+        const distance = document.getElementById('schoolDistance').value.trim() + 'm';
+        const parentName = document.getElementById('parentName').value.trim();
+
+        const nextNumber = String(applicantsList.length + 1).padStart(3, '0');
+        const newRegNo = `PPDB-RJW05-2026-${nextNumber}`;
+
+        const newApplicant = {
+            regNo: newRegNo,
+            name: fullName,
+            gender: gender,
+            age: currentCalculatedAgeStr,
+            dream: dream,
+            path: regPath,
+            distance: distance,
+            status: "Terverifikasi"
+        };
+
+        // Masukkan ke baris paling atas tabel live
+        applicantsList.unshift(newApplicant);
+        saveApplicants();
+        renderApplicantsTable();
+
+        // Isi Kartu Bukti Pendaftaran Digital
+        document.getElementById('cardRegNo').textContent = newRegNo;
+        document.getElementById('cardFullName').textContent = fullName;
+        document.getElementById('cardNickName').textContent = nickName;
+        document.getElementById('cardAge').textContent = currentCalculatedAgeStr;
+        document.getElementById('cardDream').textContent = dream;
+        document.getElementById('cardPathDist').textContent = `${regPath} (${distance})`;
+        document.getElementById('cardParent').textContent = parentName;
+        document.getElementById('cardAvatarEmoji').textContent = gender === 'Perempuan' ? '👧🏻🎀' : '👦🏻🎒';
+
+        const idCardResult = document.getElementById('idCardResult');
+        idCardResult.style.display = 'block';
+        idCardResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Jalankan perayaan Confetti warna-warni
+        launchConfettiCelebration();
+    }
+
+    /* ------------------------------------------------------------------
+       8. ANIMASI PERAYAAN CONFETTI WARNA-WARNI (Pure Canvas)
+       ------------------------------------------------------------------ */
+    function launchConfettiCelebration() {
+        const canvas = document.getElementById('confettiCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const colors = ['#38bdf8', '#facc15', '#f43f5e', '#22c55e', '#a855f7', '#fb923c'];
+        const pieces = [];
+
+        for (let i = 0; i < 110; i++) {
+            pieces.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                w: Math.random() * 12 + 6,
+                h: Math.random() * 8 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speedY: Math.random() * 4 + 2.5,
+                speedX: Math.random() * 4 - 2,
+                rotation: Math.random() * 360,
+                rotSpeed: Math.random() * 8 - 4
+            });
+        }
+
+        let frameCount = 0;
+        function drawConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            pieces.forEach(p => {
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+
+                p.y += p.speedY;
+                p.x += p.speedX;
+                p.rotation += p.rotSpeed;
+            });
+
+            frameCount++;
+            if (frameCount < 180) {
+                requestAnimationFrame(drawConfetti);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+        drawConfetti();
+    }
+
+    // Inisialisasi saat halaman dimuat
+    window.onload = function () {
+        loadApplicants();
+    };
+</script>
+</body>
+</html>
